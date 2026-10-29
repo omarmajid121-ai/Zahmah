@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0B0B0C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="زحمة">
+<title>زحمة · Zahmah</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0B0C;--fg:#F5F5F7;--mute:#98989D;--gold:#F2C230;--goldHi:#FFE27A;--goldLo:#C9930F;--ink:#1A1405;--line:rgba(255,255,255,.10)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:'DIN Next LT Arabic','DIN Arabic',-apple-system,'SF Arabic','Tajawal',system-ui,sans-serif;overscroll-behavior:none}
+body{min-height:100dvh;display:flex;flex-direction:column;-webkit-user-select:none;user-select:none}
+button{font-family:inherit;color:inherit}
+[hidden]{display:none!important}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 8px 24px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
+.gold{background:linear-gradient(180deg,var(--goldHi) 0%,var(--gold) 45%,var(--goldLo) 100%);box-shadow:inset 0 2px 1px rgba(255,255,255,.65),inset 0 -6px 12px rgba(120,80,0,.35),0 14px 34px rgba(242,194,48,.32);color:var(--ink)}
+
+.top{padding:calc(env(safe-area-inset-top) + 14px) 18px 0;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:30px;font-weight:800;color:var(--gold)}
+.pill{height:38px;padding:0 14px;border-radius:19px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--gold);border:none}
+.iconbtn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer}
+
+.seg{margin:16px 18px 0;padding:3px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.seg button{height:38px;border:none;border-radius:9px;background:transparent;font-size:15px;font-weight:600;color:var(--mute);cursor:pointer}
+.seg button[aria-checked=true]{background:rgba(255,255,255,.16);color:var(--fg);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+
+.radar{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:240px}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(242,194,48,.28)}
+.r1{width:min(78vw,320px);aspect-ratio:1}
+.r2{width:min(54vw,220px);aspect-ratio:1;border-color:rgba(242,194,48,.45);background:rgba(242,194,48,.05)}
+#dots{position:absolute;width:min(78vw,320px);aspect-ratio:1}
+.dot{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);box-shadow:0 0 12px rgba(242,194,48,.75);animation:pop .4s ease}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.center{position:relative;text-align:center}
+#count{font-size:64px;font-weight:800;line-height:1}
+#countLabel{font-size:15px;color:var(--mute)}
+body[data-online="0"] .radar{opacity:.4}
+
+.sheet{border-radius:28px 28px 0 0;padding:10px 20px calc(env(safe-area-inset-bottom) + 14px);background:linear-gradient(180deg,rgba(30,30,32,.95),rgba(14,14,15,.98));border-top:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:6px}
+.grab{width:36px;height:5px;border-radius:3px;background:#48484A}
+.row{align-self:stretch;display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.row .t{font-size:22px;font-weight:800}
+.row .s{font-size:14px;color:var(--mute);margin-top:2px}
+.sw{width:51px;height:31px;border-radius:16px;border:none;padding:2px;cursor:pointer;display:flex;justify-content:flex-end;background:#39393D;transition:background .2s;flex-shrink:0}
+.sw span{width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3);transition:transform .2s}
+.sw[aria-checked=true]{background:var(--gold);justify-content:flex-start}
+
+#talk{width:128px;height:128px;border-radius:50%;border:none;margin-top:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:none;transition:transform .12s}
+body[data-online="0"] #talk{background:rgba(255,255,255,.08);box-shadow:none;color:#636366}
+body[data-talking="1"] #talk{transform:scale(.93);outline:14px solid rgba(242,194,48,.18);outline-offset:4px}
+#talkLabel{font-size:15px;font-weight:600;color:var(--mute);margin-top:8px}
+body[data-talking="1"] #talkLabel{color:var(--gold)}
+#talkTimer,#talkHint{font-size:13px;color:var(--gold);min-height:18px}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center}
+#incoming{background:radial-gradient(110% 60% at 50% 32%,#3D300B 0%,#141108 45%,#0B0B0C 100%);padding:calc(env(safe-area-inset-top) + 40px) 24px calc(env(safe-area-inset-bottom) + 30px)}
+.bigrings{margin-top:50px;position:relative;width:232px;height:232px;display:flex;align-items:center;justify-content:center}
+.bigrings .a{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(242,194,48,.25);animation:pulse 1.6s ease-out infinite}
+.bigrings .b{position:absolute;inset:28px;border-radius:50%;border:1px solid rgba(242,194,48,.45);background:rgba(242,194,48,.06)}
+@keyframes pulse{0%{transform:scale(.85);opacity:1}100%{transform:scale(1.1);opacity:0}}
+.speaker{position:relative;width:128px;height:128px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+#incCode{margin-top:26px;font-size:40px;font-weight:800;color:var(--gold);direction:ltr}
+#wave{margin-top:22px;display:flex;align-items:center;gap:4px;height:56px}
+#wave span{width:4px;height:8px;border-radius:2px;background:var(--gold);transition:height .08s}
+.actions{margin-top:auto;display:flex;gap:40px}
+.act{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.act .c{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+
+#onboard{background:radial-gradient(90% 45% at 50% 0%,#3A2E0C 0%,#0B0B0C 70%);padding:calc(env(safe-area-inset-top) + 70px) 30px calc(env(safe-area-inset-bottom) + 26px);align-items:stretch}
+.appicon{align-self:center;width:96px;height:96px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+#onboard h1{margin:20px 0 0;text-align:center;font-size:32px;font-weight:800}
+.feat{display:flex;gap:16px;align-items:flex-start;margin-top:26px}
+.feat .ic{width:48px;height:48px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.feat b{display:block;font-size:17px}
+.feat span{font-size:15px;color:var(--mute);line-height:1.45}
+.primary{height:54px;border-radius:16px;border:none;font-size:17px;font-weight:800;cursor:pointer;width:100%}
+.fine{font-size:12px;color:var(--mute);text-align:center;margin:0 0 14px;line-height:1.5}
+
+.modal{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.55);display:flex;align-items:flex-end}
+.modal .panel{width:100%;border-radius:24px 24px 0 0;background:#1C1C1E;padding:18px 18px calc(env(safe-area-inset-bottom) + 18px);border-top:1px solid var(--line)}
+.panel h2{margin:0 0 6px;font-size:20px}
+.panel p{margin:0 0 14px;font-size:14px;color:var(--mute);line-height:1.5}
+.panel input{width:100%;height:50px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--fg);font-size:17px;padding:0 14px;font-family:inherit;-webkit-user-select:text;user-select:text}
+.panel input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.btns{display:flex;gap:10px;margin-top:14px}
+.btns button{flex:1;height:50px;border-radius:14px;border:none;font-size:16px;font-weight:700;cursor:pointer}
+.ghost{background:rgba(255,255,255,.10)}
+.list{border-radius:14px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:10px}
+.li{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;border-top:1px solid var(--line);font-size:16px}
+.li:first-child{border-top:none}
+.li .v{margin-inline-start:auto;color:var(--mute)}
+.li button{margin-inline-start:auto;background:none;border:none;color:var(--gold);font-size:15px;font-weight:700;cursor:pointer;min-height:44px}
+#myCodeBig{font-size:44px;font-weight:800;color:var(--gold);text-align:center;direction:ltr;margin:6px 0 2px}
+
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translate(-50%,40px);opacity:0;z-index:50;background:rgba(40,40,42,.95);color:#fff;padding:12px 18px;border-radius:14px;font-size:15px;transition:.25s;max-width:90vw;text-align:center;border:1px solid var(--line);pointer-events:none}
+#toast.show{transform:translate(-50%,0);opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body data-online="0" data-talking="0" data-mode="near">
+
+<header class="top">
+  <span class="brand">زحمة</span>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span class="pill glass" id="myCode" dir="ltr">Z-0000</span>
+    <button class="iconbtn glass" id="openSettings" aria-label="الإعدادات">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="seg" role="radiogroup" aria-label="القناة">
+  <button id="segNear" role="radio" aria-checked="true">قريب مني</button>
+  <button id="segRoom" role="radio" aria-checked="false">غرفة خاصة</button>
+</div>
+
+<main class="radar" aria-live="polite">
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div id="dots" aria-hidden="true"></div>
+  <div class="center">
+    <div id="count">—</div>
+    <div id="countLabel">غير متاح</div>
+  </div>
+</main>
+
+<section class="sheet">
+  <span class="grab"></span>
+  <div class="row">
+    <div><div class="t" id="statusTitle">غير متاح</div><div class="s" id="statusSub">فعّل لتسمع وتُسمَع</div></div>
+    <button class="sw" id="sw" role="switch" aria-checked="false" aria-label="متاح"><span></span></button>
+  </div>
+  <button id="talk" class="gold" aria-label="اضغط مع الاستمرار للتحدث">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="8.5" y="2" width="7" height="13" rx="3.5"/><path d="M5 11a7 7 0 0 0 14 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div id="talkLabel">فعّل الإتاحة للتحدث</div>
+  <div id="talkTimer"></div>
+  <div id="talkHint"></div>
+</section>
+
+<!-- incoming voice -->
+<div class="overlay" id="incoming" hidden>
+  <div class="bigrings"><span class="a"></span><span class="b"></span>
+    <span class="speaker gold"><svg width="54" height="54" viewBox="0 0 24 24" fill="#1A1405" aria-hidden="true"><path d="M11 4.5L6.2 8.5H3v7h3.2l4.8 4z"/><path d="M15 8.5a5 5 0 0 1 0 7M18 5.5a9 9 0 0 1 0 13" fill="none" stroke="#1A1405" stroke-width="2" stroke-linecap="round"/></svg></span>
+  </div>
+  <div id="incCode">Z-0000</div>
+  <div style="font-size:17px;color:var(--mute);margin-top:4px">يتكلم الآن</div>
+  <div id="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="actions">
+    <button class="act" id="muteBtn"><span class="c glass"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FFF" aria-hidden="true"><path d="M11 4.5L6.2 8.5H3v7h3.2l4.8 4z"/><path d="M21 9l-5 6M16 9l5 6" fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round"/></svg></span>كتم</button>
+    <button class="act" id="blockBtn"><span class="c glass"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span>حظر</button>
+    <button class="act" id="reportBtn"><span class="c glass" style="border-color:rgba(255,69,58,.5)"><svg width="24" height="24" viewBox="0 0 24 24" fill="#FF453A" aria-hidden="true"><path d="M5 22V3h1.8v1H18l-2.5 4.5L18 13H6.8v9z"/></svg></span>إبلاغ</button>
+  </div>
+</div>
+
+<!-- onboarding -->
+<div class="overlay" id="onboard">
+  <div class="appicon gold" aria-hidden="true"><svg width="64" height="64" viewBox="0 0 300 300"><circle cx="150" cy="150" r="128" fill="none" stroke="#1A1405" stroke-width="14" stroke-opacity=".35"/><circle cx="150" cy="150" r="90" fill="none" stroke="#1A1405" stroke-width="16" stroke-opacity=".65"/><circle cx="150" cy="150" r="54" fill="#1A1405"/><rect x="136" y="118" width="28" height="44" rx="14" fill="#F2C230"/></svg></div>
+  <h1>مرحباً بك في <span style="color:var(--gold)">زحمة</span></h1>
+  <div class="feat"><span class="ic glass"><svg width="24" height="24" viewBox="0 0 24 24" fill="#F2C230" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></span><div><b>من حولك فقط</b><span>اضغط وتكلّم — يسمعك من حولك ضمن ١ كم تقريباً.</span></div></div>
+  <div class="feat"><span class="ic glass"><svg width="24" height="24" viewBox="0 0 24 24" fill="#F2C230" aria-hidden="true"><path d="M12 2l8 3.2v6.3c0 4.9-3.4 9-8 10.5-4.6-1.5-8-5.6-8-10.5V5.2z"/></svg></span><div><b>هوية برمز</b><span>لا اسم ولا صورة. موقعك الدقيق لا يُرسل لأحد.</span></div></div>
+  <div class="feat"><span class="ic glass"><svg width="24" height="24" viewBox="0 0 24 24" fill="#F2C230" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg></span><div><b>غرفة خاصة للتجربة</b><span>جرّب مع صديقك من أي مكان باسم غرفة مشترك.</span></div></div>
+  <div style="flex:1"></div>
+  <p class="fine">الأصوات لا تُخزّن — تُبث مباشرة ثم تختفي.</p>
+  <button class="primary gold" id="startBtn">ابدأ</button>
+</div>
+
+<!-- room sheet -->
+<div class="modal" id="roomSheet" hidden>
+  <form class="panel" id="roomForm">
+    <h2>غرفة خاصة</h2>
+    <p>اكتب نفس اسم الغرفة على جوالك وجوال صديقك لتتكلموا من أي مكان.</p>
+    <label for="roomInput" style="font-size:13px;color:var(--mute)">اسم الغرفة</label>
+    <input id="roomInput" maxlength="40" autocomplete="off" placeholder="مثال: omar-test">
+    <div class="btns">
+      <button type="button" class="ghost" id="roomCancel">إلغاء</button>
+      <button type="button" class="ghost" id="shareRoom">مشاركة</button>
+      <button type="submit" class="gold">دخول</button>
+    </div>
+  </form>
+</div>
+
+<!-- settings -->
+<div class="modal" id="settings" hidden>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2>رمزي</h2><button class="ghost" id="closeSettings" style="height:36px;padding:0 14px;border-radius:18px;border:none;cursor:pointer">تم</button></div>
+    <div id="myCodeBig">Z-0000</div>
+    <p style="text-align:center">هذا كل ما يراه الناس عنك</p>
+    <div class="list">
+      <div class="li">نطاق السماع<span class="v">~١ كم</span></div>
+      <div class="li">المحظورون <span class="v" id="blockedCount">٠</span><button id="clearBlocked" style="margin-inline-start:12px">إلغاء الحظر</button></div>
+      <div class="li">رمز جديد<button id="newCode">إنشاء</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
